@@ -8,5 +8,5 @@ Gem::Specification.new do |s|
   s.email       = ["dolzenko@gmail.com"]
   s.homepage    = "http://github.com/dolzenko/method_extensions"
   s.summary     = "Method object extensions for better code navigation"
-  s.files       = Dir.glob("lib/**/*") + %w(dolzenko.gemspec)
+  s.files       = Dir.glob("lib/**/*") + %w(method_extensions.gemspec)
 end
