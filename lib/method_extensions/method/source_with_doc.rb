@@ -108,7 +108,19 @@ module MethodExtensions
     end
 
     def full_inspect
-      "#{ inspect }\n#{ source_location }\n#{ source_with_doc }"
+      "#{ to_s }\n#{ source_location }\n#{ source_with_doc }"
+    end
+
+    # Place this to the ~/.irbrc
+    # class Method
+    #   alias :inspect, :irb_inspect if method_defined?(:irb_inspect)
+    # end
+    # class UnboundMethod
+    #   alias :inspect, :irb_inspect if method_defined?(:irb_inspect)
+    # end
+    def irb_inspect
+      puts full_inspect
+      nil
     end
 
     private
