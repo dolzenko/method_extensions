@@ -18,6 +18,9 @@ And some sugar
 
 ## Usage
 
+See how method_extensions can be used to look under the hood of a few Rails 3
+core methods at my blog post [Travel To The Core Rails 3 Methods Without Leaving IRB Prompt](http://dolzhenko.org/blog/?p=167).
+
     > irb
     ruby-1.9.2-head > require "method_extensions"
     ruby-1.9.2-head > require "fileutils"
