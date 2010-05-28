@@ -113,10 +113,10 @@ module MethodExtensions
 
     # Place this to the ~/.irbrc
     # class Method
-    #   alias :inspect, :irb_inspect if method_defined?(:irb_inspect)
+    #   alias_method :inspect, :irb_inspect if method_defined?(:irb_inspect)
     # end
     # class UnboundMethod
-    #   alias :inspect, :irb_inspect if method_defined?(:irb_inspect)
+    #   alias_method :inspect, :irb_inspect if method_defined?(:irb_inspect)
     # end
     def irb_inspect
       puts full_inspect
