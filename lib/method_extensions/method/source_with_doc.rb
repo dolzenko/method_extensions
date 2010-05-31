@@ -119,7 +119,9 @@ module MethodExtensions
     #   alias_method :inspect, :irb_inspect if method_defined?(:irb_inspect)
     # end
     def irb_inspect
-      puts full_inspect
+      require "coderay"
+      puts "#{ to_s }\n#{ source_location }"
+      puts CodeRay.scan(source_with_doc, :ruby).term
       nil
     end
 

@@ -9,4 +9,6 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/dolzenko/method_extensions"
   s.summary     = "Method object extensions for better code navigation"
   s.files       = Dir.glob("lib/**/*") + %w(method_extensions.gemspec)
+
+  s.add_dependency "coderay", "0.9.3"
 end
