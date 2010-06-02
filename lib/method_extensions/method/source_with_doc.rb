@@ -153,7 +153,7 @@ module MethodExtensions
         #    puts e.inspect
         #    # anything goes wrong - just display comment verbatim
         #  end
-        print d
+        puts d
         # puts
       end
 
