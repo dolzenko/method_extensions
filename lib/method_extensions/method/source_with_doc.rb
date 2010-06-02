@@ -10,7 +10,7 @@ module MethodExtensions
     # Returns method source by parsing the file returned by `Method#source_location`.
     #
     # If method definition cannot be found `ArgumentError` exception is raised
-    # (this includes methods defined `attr_accessor`, `module_eval` etc.).
+    # (this includes methods defined by `attr_accessor`, `module_eval` etc.).
     #
     # Sample IRB session:
     #
@@ -119,9 +119,53 @@ module MethodExtensions
     #   alias_method :inspect, :irb_inspect if method_defined?(:irb_inspect)
     # end
     def irb_inspect
+      return to_s if caller.grep(/pp\.rb/) # pretty_print has some logic
+      # based on output of Method#inspect, nasty, huh?
+
       require "coderay"
-      puts "#{ to_s }\n#{ source_location }"
-      puts CodeRay.scan(source_with_doc, :ruby).term
+      require "rdoc/ri/driver"
+      
+      puts to_s
+
+      if source_location
+        puts "#{ source_location[0] }:#{ source_location[1] }"
+      end
+
+      d = doc
+
+      if d && !(d = d.chomp).empty?
+        # puts
+        # TODO
+        # 1. is there better way to drive RDoc?
+        # 2. probably need to detect other doc types?
+        # 3. RDoc::Markup::ToAnsi formatter reflows to the 78 chars width which
+        #    looks ugly
+        # 
+        #  begin
+        #    formatter = Class.new(RDoc::Markup::ToAnsi) do
+        #      def wrap(text)
+        #        @res << text
+        #      end
+        #    end.new
+        #    parser = Class.new.extend(RDoc::Text)
+        #    d = d.split("\n").map { |l| parser.parse(l).accept(formatter) }.join("\n")
+        ##        rescue Exception => e
+        #    puts e.inspect
+        #    # anything goes wrong - just display comment verbatim
+        #  end
+        print d
+        # puts
+      end
+
+      begin
+        src = source
+        if src && !src.empty?
+          puts CodeRay.scan(source_unindent(src), :ruby).term
+        end
+      rescue ArgumentError => e
+        puts e.message
+      end
+      
       nil
     end
 
