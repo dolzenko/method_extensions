@@ -119,7 +119,7 @@ module MethodExtensions
     #   alias_method :inspect, :irb_inspect if method_defined?(:irb_inspect)
     # end
     def irb_inspect
-      return to_s if caller.grep(/pp\.rb/) # pretty_print has some logic
+      return to_s unless caller.grep(/pp\.rb/).empty? # pretty_print has some logic
       # based on output of Method#inspect, nasty, huh?
 
       require "coderay"
