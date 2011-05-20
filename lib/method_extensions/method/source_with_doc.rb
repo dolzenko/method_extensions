@@ -9,7 +9,7 @@ module MethodExtensions
   module MethodSourceWithDoc
     # Returns method source by parsing the file returned by `Method#source_location`.
     #
-    # If method definition cannot be found `ArgumentError` exception is raised
+    # If method definition cannot be found `MethodExtensions::SourceNotFoundError` exception is raised
     # (this includes methods defined by `attr_accessor`, `module_eval` etc.).
     #
     # Sample IRB session:
@@ -57,7 +57,7 @@ module MethodExtensions
     # ruby-1.9.2-head > irb_context.inspect_mode = false # turn off inspect mode so that we can view sources
     #
     # ruby-1.9.2-head > ActiveRecord::Base.method(:find).source_with_doc
-    # ArgumentError: failed to find method definition around the lines:
+    # MethodExtensions::SourceNotFoundError: failed to find method definition around the lines:
     #       delegate :find, :first, :last, :all, :destroy, :destroy_all, :exists?, :delete, :delete_all, :update, :update_all, :to => :scoped
     #       delegate :find_each, :find_in_batches, :to => :scoped
     #
@@ -124,7 +124,7 @@ module MethodExtensions
 
       require "coderay"
       require "rdoc/ri/driver"
-      
+
       puts to_s
 
       if source_location
@@ -140,7 +140,7 @@ module MethodExtensions
         # 2. probably need to detect other doc types?
         # 3. RDoc::Markup::ToAnsi formatter reflows to the 78 chars width which
         #    looks ugly
-        # 
+        #
         #  begin
         #    formatter = Class.new(RDoc::Markup::ToAnsi) do
         #      def wrap(text)
@@ -165,7 +165,7 @@ module MethodExtensions
       rescue ArgumentError => e
         puts e.message
       end
-      
+
       nil
     end
 
@@ -206,8 +206,7 @@ module MethodExtensions
         if @method_source
           @method_source
         else
-          raise ArgumentError.new("failed to find method definition around the lines:\n" <<
-                  definition_lines.join("\n"))
+          raise SourceNotFoundError.new(definition_lines)
         end
       end
 
